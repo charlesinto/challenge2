@@ -12,9 +12,12 @@ class UserForm(forms.ModelForm):
         return data
 
     def clean_email(self):
+
         data = self.cleaned_data['email']
-        if len(data) == 0:
-            raise forms.ValidationError("email is required")
+        match = re.search(
+            r'\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b', data, re.I)
+        if not match:
+            raise forms.ValidationError("email is not valid")
 
         # Always return a value to use as the new cleaned data, even if
         # this method didn't change it.
