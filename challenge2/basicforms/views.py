@@ -15,7 +15,7 @@ def form_view(request):
         if form.is_valid():
             form.save(commit=True)
             # do something with the form
-            return index(request)
+            return users(request)
     return render(request, 'basicforms/form_page.html', {'form': form})
 
 
