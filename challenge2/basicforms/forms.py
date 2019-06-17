@@ -1,22 +1,24 @@
 from django import forms
 from django.core import validators
 from basicforms.models import Users
+import re
 
 
 class UserForm(forms.ModelForm):
-    name = forms.CharField()
-    email = forms.EmailField()
-    botcatcher = forms.CharField(required=False,
-                                 widget=forms.HiddenInput, validators=[
-                                     validators.MaxLengthValidator(0)]
-                                 )
+    def clean_name(self):
+        data = self.cleaned_data['name']
+        if len(data) < 5:
+            raise forms.ValidationError("Name is required")
+        return data
 
-    def clean_botcatcher(self):
-        botcatcher = self.cleaned_data['botcatcher']
+    def clean_email(self):
+        data = self.cleaned_data['emaill']
+        if len(data) == 0:
+            raise forms.ValidationError("You have forgotten about Fred!")
 
-        if len(botcatcher) > 0:
-            raise forms.ValidationError("GOTCHA BOT!")
-        return botcatcher
+        # Always return a value to use as the new cleaned data, even if
+        # this method didn't change it.
+        return data
 
     class Meta:
         model = Users
