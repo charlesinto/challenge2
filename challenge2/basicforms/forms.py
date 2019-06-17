@@ -12,9 +12,9 @@ class UserForm(forms.ModelForm):
         return data
 
     def clean_email(self):
-        data = self.cleaned_data['emaill']
+        data = self.cleaned_data['email']
         if len(data) == 0:
-            raise forms.ValidationError("You have forgotten about Fred!")
+            raise forms.ValidationError("email is required")
 
         # Always return a value to use as the new cleaned data, even if
         # this method didn't change it.
